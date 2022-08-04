@@ -25,13 +25,13 @@ You can customize the `//go:embed` directive in the source before building if yo
 
 ## Site root
 
-Somewhat annoyingly, when you use `go:embed` to add a folder, Go embeds the folder to the root of the virtual file system, without a way to configure Go to add its _contents_ to the root. Because our directive is `go:embed files`, that means all filenames have to be prefixed with `files/`. This is unintuitive as you would expect your site root, for example, to be at `index.html`, not `files/index.html`.
+Somewhat annoyingly, when you use `//go:embed` to add a folder, Go embeds the folder to the root of the virtual file system, without a way to configure Go to add its _contents_ to the root. Because our directive is `//go:embed files`, that means all filenames have to be prefixed with `files/`. This is unintuitive as you would expect your site root, for example, to be at `index.html`, not `files/index.html`.
 
 To counter this behavior, this module automatically ["subs the FS"](https://pkg.go.dev/io/fs#Sub) to trim that top-level folder prefix as long as the embedded directory is named `files`, and it is not moved or renamed by you.
 
 I would recommend simply doing as the instructions say, and putting your content into the `files` folder. You can put multiple folders in there if you want more than one. But you are always welcome to do your own thing and change the go:embed directive, etc. If you do that, the automatic prefix stripping won't work for you.
 
-If you are using `file_server` _and if you change the go:embed directive_, you can still strip the root folder name like this:
+If you are using `file_server` and want to have the contents of a top-level folder be accessed from the root of the file system, _and if you customize the //go:embed directive_, you can still strip the root folder name like this:
 
 ```
 file_server {
@@ -40,6 +40,6 @@ file_server {
 }
 ```
 
-where `myfolder` is the name of the folder you added to the `go:embed` directive. **This is only required if you are customizing the go:embed directive.**
+where `myfolder` is the name of the folder you added to the `go:embed` directive. **This is only applicable if you are customizing the //go:embed directive and want to strip the top-level folder from the path.**
 
 In summary: For most people, this module will "just work" and you do not need to set or change the site root.
