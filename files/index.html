@@ -1,0 +1,28 @@
+<html>
+	<body>
+		<h1>Caddy embedded file server works!</h1>
+		<p>
+			<b>Make sure to replace the contents of this folder with your own files.</b>
+		</p>
+		<p>
+			You will need to clone this Caddy plugin and replace the files in the <code>files</code>
+			subfolder, then build Caddy with your locally-cloned plugin to embed your own content.
+			Something like this:
+		</p>
+		<pre><code>$ git clone https://github.com/mholt/caddy-embed.git
+$ cd caddy-embed
+$ rm files/*
+$ cp -r ~/site files/
+$ xcaddy build --with github.com/mholt/caddy-embed=.</code></pre>
+		<p>
+			Then your <code>caddy</code> binary has your site's files embedded with in it.
+			Be sure to specify it in your config:
+		</p>
+		<pre><code>file_server {
+	fs embedded
+}</code></pre>
+		<p>
+			<a href="https://github.com/mholt/caddy-embed">Source code and issues on GitHub</a>
+		</p>
+	</body>
+</html>
