@@ -2,7 +2,6 @@ package caddyembed
 
 import (
 	"embed"
-	"fmt"
 	"io/fs"
 	"strings"
 
@@ -67,12 +66,13 @@ func stripFolderPrefix() error {
 	return nil
 }
 
-// FS implements a Caddy module and fs.StatFS for an embedded
+// FS implements a Caddy module and fs.FS for an embedded
 // file system provided by an unexported package variable.
 //
-// Simply put your files in a subfolder called `files` then
-// build Caddy with your local copy of this plugin. Your
-// site's files will be embedded directly into the binary.
+// To use, simply put your files in a subfolder called
+// "files", then build Caddy with your local copy of this
+// plugin. Your site's files will be embedded directly
+// into the binary.
 //
 // If the embedded file system contains only one file in
 // its root which is a folder named "files", this module
@@ -91,25 +91,17 @@ func (FS) CaddyModule() caddy.ModuleInfo {
 }
 
 func (FS) Open(name string) (fs.File, error) {
-	// TODO: the file server doesn't clean up leading and trailing slashes, but embed.FS is particular so we remove them here; I wonder if the file server should be tidy in the first place (see also Stat below)
+	// TODO: the file server doesn't clean up leading and trailing slashes, but embed.FS is particular so we remove them here; I wonder if the file server should be tidy in the first place
 	name = strings.Trim(name, "/")
 	return files.Open(name)
 }
 
-func (FS) Stat(name string) (fs.FileInfo, error) {
-	name = strings.Trim(name, "/")
-	file, err := files.Open(name)
-	if err != nil {
-		return nil, fmt.Errorf("stat: %w", err)
-	}
-	defer file.Close()
-	return file.Stat()
-}
-
+// UnmarshalCaddyfile exists so this module can be used in
+// the Caddyfile, but there is nothing to unmarshal.
 func (FS) UnmarshalCaddyfile(d *caddyfile.Dispenser) error { return nil }
 
 // Interface guards
 var (
-	_ fs.StatFS             = (*FS)(nil)
+	_ fs.FS                 = (*FS)(nil)
 	_ caddyfile.Unmarshaler = (*FS)(nil)
 )
