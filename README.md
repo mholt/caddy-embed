@@ -5,6 +5,9 @@ This Caddy plugin embeds your site directly into your web server's binary.
 
 **NOTE:** This plugin requires building Caddy from source on your own machine because you need to add your own content to the `files` directory before compiling. The `go` command is _required_ and I recommend using [`xcaddy`](https://github.com/caddyserver/xcaddy) to build. You cannot download this plugin from the Caddy website, for example, and expect it to have your site embedded within it.
 
+> [!NOTE]
+> This is not an official repository of the [Caddy Web Server](https://github.com/caddyserver) organization.
+
 ## Instructions
 
 1. Clone this repo: `git clone https://github.com/mholt/caddy-embed.git && cd caddy-embed`
